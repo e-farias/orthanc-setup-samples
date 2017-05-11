@@ -1,15 +1,8 @@
 version: "2"
 services:
-        orthanc:
-                build: orthanc
-                depends_on: [orthanc-index]
-                restart: unless-stopped
+        foo:
+                build: orthanc-foo
                 ports: ["104:4242", "80:8042"]
-                volumes: ["orthanc-storage:/var/lib/orthanc/db:Z"]
-        orthanc-index:
-                image: postgres
-                restart: unless-stopped
-                volumes: ["orthanc-index:/var/lib/postgresql/data:Z"]
-volumes:
-        orthanc-storage:
-        orthanc-index:
+        bar:
+                build: orthanc-bar
+                ports: ["105:4242", "81:8042"]
