@@ -1,10 +1,8 @@
 {
         "Name": "Foo",
-        "PostgreSQL": {
+        "MSSQL": {
                 "EnableIndex": true,
-                "EnableStorage": false,
-                "Host": "orthanc-index",
-                "Database": "postgres",
-                "Username": "postgres"
+                "ConnectionString": "foobar",
+                "LicenseString": "foobar"
         }
 }
