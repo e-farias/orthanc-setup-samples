@@ -1,6 +1,7 @@
 {
         "Name": "Foo",
-        "OrthancPeers": {
-                "bar": ["http://bar:8042/"]
+        "DicomAet": "FOO",
+        "DicomModalities": {
+                "bar": ["BAR", "bar", 4242]
         }
 }
