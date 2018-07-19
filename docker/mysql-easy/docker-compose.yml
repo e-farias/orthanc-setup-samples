@@ -1,7 +1,8 @@
 version: "2"
 services:
         orthanc:
-                image: osimis/orthanc:orthanc-next
+#                image: osimis/orthanc:orthanc-next
+                build: .
                 depends_on: [index]
                 ports: ["104:4242", "80:8042"]
                 volumes: ["storage:/var/lib/orthanc/db:Z"]
@@ -10,18 +11,18 @@ services:
                         MYSQL_USER: test-user
                         MYSQL_DB: orthanc
                         MYSQL_PASSWORD: foo
+                        TRACE_ENABLED: "true"
                 restart: unless-stopped
+                privileged: true
         index:
-                image: mysql:5.7
-#                image: mariadb
-                # --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-                command: --default-authentication-plugin=mysql_native_password
-                volumes: ["index:/var/lib/mysql:Z"]
+                image: mysql:8.0
+                command: [mysqld, --default-authentication-plugin=mysql_native_password, --log-bin-trust-function-creators=1]
+#                volumes: ["index:/var/lib/mysql:Z"]
                 environment:
                         MYSQL_PASSWORD: foo
                         MYSQL_USER: test-user
                         MYSQL_DATABASE: orthanc
-                        MYSQL_ROOT_PASSWORD: foo
+                        MYSQL_ROOT_PASSWORD: foo-root
 
                 restart: unless-stopped
         mysql-admin:
