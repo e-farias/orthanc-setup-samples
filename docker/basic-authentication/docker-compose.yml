@@ -1,5 +1,29 @@
 version: "2"
 services:
-        orthanc:
-                build: orthanc
-                ports: ["80:8042"]
+        orthanc-no-auth:
+                image: osimis/orthanc:current
+                ports: ["8042:8042"]
+                environment:
+                        - NAME=Orthanc No auth
+                        - AC_AUTHENTICATION_ENABLED=false
+        orthanc-my-password:
+                image: osimis/orthanc:current
+                ports: ["8043:8042"]
+                environment:
+                        - NAME=Orthanc My password
+                        - BUNDLE_DEBUG=true
+                        - AC_AUTHENTICATION_ENABLED=true
+                        - |
+                          AC_REGISTERED_USERS=
+                          {
+                             "me": "mypassword"
+                          }
+        orthanc-default-password:
+                # check the logs to know the password that has been generated for you
+                image: osimis/orthanc:current
+                ports: ["8044:8042"]
+                environment:
+                        - NAME=Orthanc Auto password
+                        - AC_AUTHENTICATION_ENABLED=true
+
+
