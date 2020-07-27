@@ -1,15 +1,20 @@
 version: "2"
 services:
   orthanc:
-    image: osimis/orthanc
+    image: osimis/orthanc-pro:dev-fefc020
     depends_on: [index]
     ports: ["104:4242", "80:8042"]
     volumes: ["storage:/var/lib/orthanc/db:Z"]
     environment:
+      VERBOSE_ENABLED: "true"
+      VERBOSE_STARTUP: "true"
+
       ORTHANC__MYSQL__HOST: index
       ORTHANC__MYSQL__USERNAME: test-user
       ORTHANC__MYSQL__DATABASE: orthanc
       ORTHANC__MYSQL__PASSWORD: foo
+      ORTHANC__MYSQL__ENABLE_SSL: "true"
+      ORTHANC__MYSQL__SSL_VERIFY_SERVER_CERTIFICATES: "false"
       ORTHANC__REGISTERED_USERS: |
         {"demo": "demo"}
 
