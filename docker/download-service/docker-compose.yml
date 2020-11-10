@@ -1,0 +1,30 @@
+version: "2"
+services:
+  orthanc:
+    build: orthanc
+    restart: unless-stopped
+    ports: ["8042:8042"]
+    volumes: ["orthanc-storage:/var/lib/orthanc/db"]
+    environment:
+      VERBOSE_ENABLED: "true"
+      PYTHON_PLUGIN_ENABLED: "true"
+      OSIMIS_WEB_VIEWER1_PLUGIN_ENABLED: "true"
+      ORTHANC_JSON : |
+        {
+          "Name": "Orthanc for download service demo",
+          "AuthenticationEnabled": false,
+          "PythonScript": "/python/archive-route.py",
+          "MediaArchiveSize" : 10,
+          "JobsHistorySize" : 100
+        }
+
+  download-service:
+    build: download-service
+    restart: unless-stopped
+    ports: ["5000:5000"]
+    environment:
+      ORTHANC_INTERNAL_URL: "http://orthanc:8042"
+      ORTHANC_PUBLIC_URL: "http://localhost:8042"
+
+volumes:
+  orthanc-storage:
