@@ -4,15 +4,16 @@ import os
 import pprint
 
 staticFolder = os.path.join(os.path.dirname(__file__), "static")
+archivesFolder = os.path.join(os.path.dirname(__file__), "archives")
 
 app = Flask(__name__, template_folder=staticFolder)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 
 orthancInternalUrl = os.environ.get("ORTHANC_INTERNAL_URL", "http://localhost:8044")
-orthancPublicUrl = os.environ.get("ORTHANC_PUBLIC_URL", "http://localhost:8044")
+downloadPublicUrl = os.environ.get("DOWNLOAD_PUBLIC_URL", "http://localhost:80")
 
-print(f"orthancInternalUrl = {orthancInternalUrl}, orthancPublicUrl = {orthancPublicUrl}")
+print(f"orthancInternalUrl = {orthancInternalUrl}, downloadPublicUrl = {downloadPublicUrl}")
 downloadJobs = {}
 
 # API route to trigger the job and monitor its status
@@ -45,7 +46,13 @@ def apiDownloadStudy(studyId):
       status = "download queued for preparation"
       if job["State"] == "Success":
         status = "ready - download will start very soon"
-        downloadUrl = f"{orthancPublicUrl}/jobs/{jobId}/archive"
+        print(f"downloading from orthanc such that nginx can serve it (TODO: make this asynchronous)")
+        archive = requests.get(f"{orthancInternalUrl}/jobs/{jobId}/archive").content
+
+        with open(f"/www/data/{studyId}.zip", "wb") as f:
+          f.write(archive)
+
+        downloadUrl = f"{downloadPublicUrl}/{studyId}.zip"
       elif job["Progress"] >= 1:
         status = f"preparing download - {job['Progress']} %"
 

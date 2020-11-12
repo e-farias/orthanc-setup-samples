@@ -1,5 +1,12 @@
 version: "2"
 services:
+  nginx:
+    build: nginx
+    restart: unless-stopped
+    ports: ["80:80"]
+    volumes: ["downloads:/www/data"]
+
+
   orthanc:
     build: orthanc
     restart: unless-stopped
@@ -22,9 +29,11 @@ services:
     build: download-service
     restart: unless-stopped
     ports: ["5000:5000"]
+    volumes: ["downloads:/www/data"]
     environment:
       ORTHANC_INTERNAL_URL: "http://orthanc:8042"
-      ORTHANC_PUBLIC_URL: "http://localhost:8042"
+      DOWNLOAD_PUBLIC_URL: "http://localhost:80"
 
 volumes:
   orthanc-storage:
+  downloads:

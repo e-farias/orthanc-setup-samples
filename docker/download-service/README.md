@@ -31,7 +31,10 @@ A Flask server provides:
 
 - a `/api/studies/{id}/archive` route that is in charge of triggering the download if it is not started yet and provide the status of the job if a job is already running for this study
 - a "download page" that creates the job and shows its status (queued - preparing download (XX %) - ready for download)
+- the flask server downloads the file from orthanc to store it in a temporary storage such that nginx will be able to serve it
 - the download page triggers the download in the browser once it is ready
+
+An nginx server is used to serve the zip files and provides the "Accept-Ranges" HTTP header (note: flask can probably do it as well but it's not immediate)
 
 
 Point of attention:
