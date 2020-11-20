@@ -33,6 +33,7 @@ A Flask server provides:
 - a "download page" that creates the job and shows its status (queued - preparing download (XX %) - ready for download)
 - the flask server downloads the file from orthanc to store it in a temporary storage such that nginx will be able to serve it
 - the download page triggers the download in the browser once it is ready
+- cleanup of old archive (at startup + after an expiration period)
 
 An nginx server is used to serve the zip files and provides the "Accept-Ranges" HTTP header (note: flask can probably do it as well but it's not immediate)
 
@@ -43,14 +44,13 @@ Point of attention:
 - `"JobsHistorySize"` defines the number of jobs in the history (they are used to retrieve the archive url) -> it is set to 100 in this demo
 
 
-# TODO
+# Improvements (TODO)
 
 - Right now, when clicking the download button in the OsimisViewer, the "download page" opens in the same browser tab -> we should provide an option in the viewer
 to open this link in a new window
 - make the download page look good !
 - handle errors in the download page !
-- cleanup the `downloadJobs` map in the flask server
-- move the flask server inside the python plugin to have a self-contained solution (that probably requires a few extra hours of work)
+- move the flask server inside the python plugin to have a self-contained solution
 
 
 

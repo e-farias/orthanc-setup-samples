@@ -33,6 +33,8 @@ services:
     environment:
       ORTHANC_INTERNAL_URL: "http://orthanc:8042"
       DOWNLOAD_PUBLIC_URL: "http://localhost:80"
+      ARCHIVES_FOLDER: "/www/data"
+      EXPIRATION_AFTER_MINUTES: 5
 
 volumes:
   orthanc-storage:

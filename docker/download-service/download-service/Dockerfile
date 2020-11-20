@@ -7,4 +7,4 @@ RUN mkdir /app
 
 ADD . /
 
-CMD [ "python", "/download-service.py" ]
+CMD [ "python", "-u", "/download-service.py" ]
